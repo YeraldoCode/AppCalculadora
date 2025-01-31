@@ -75,9 +75,11 @@ visor = tk.Entry(ventana,
                  bd=10,
                  insertwidth=4,
                  width=14,
-                 borderwidth=4,
+                 borderwidth=2,
                  justify='right',
                  bg='light gray',
+                 relief='sunken',
+                 background="#e8f0fe"
                  )
 visor.grid(row=0,
            column=0,
@@ -93,47 +95,66 @@ botones = [
     ('0', 4, 0), ('C', 4, 1), (',', 4, 2), ('+', 4, 3),
 ]
 
+#colores almacenados en variables
+color_fondo_numero = "light blue"
+color_fondo_operacion = "purple"
+color_fondo_especial = "blue"
+color_fondo_calcular = "#f0f0f0"
+color_fondo_presionado = "#f0f0f0"
+color_fondo_calcular_presionado = "#f0f0f0"
+color_texto_numero = "#333333"
+color_texto_especial = "#000000"
+
 # Crear botones en la ventana (excepto el igual)
 for (texto, fila, columna) in botones:
-    if texto == 'C':
-        comando = limpiar
+    if texto in ['/', '*', '-', '+']:
+        comando = lambda x=texto: pulsar_tecla(x)
+        color_fondo = color_fondo_operacion
+        color_texto = color_texto_especial
+    elif texto == 'C':
+        comando = lambda x=texto: limpiar()
+        color_fondo = color_fondo_especial
+        color_texto = color_texto_especial
+    elif texto == ',':
+        comando = lambda x=texto: pulsar_tecla(x)
+        color_fondo = color_fondo_especial
+        color_texto = color_texto_especial
     else:
         comando = lambda x=texto: pulsar_tecla(x)
+        color_fondo = color_fondo_numero
+        color_texto = color_texto_numero
+
+
+
+
     tk.Button(ventana, 
                 text=texto, 
                 padx=20,
                 pady=20,
+                font=('Helvetica', 20, 'bold'),
+                bg=color_fondo,
+                fg=color_texto,
+                activeforeground=color_texto_especial,
+                activebackground=color_fondo_presionado,
+                bd=1,
+                relief="raised",
                 command=comando
                 ).grid(row=fila, 
                                 column=columna,
-                                sticky='nsew',)
+                                sticky='nsew',
+                                padx=2,
+                                pady=2)
 #boton de igual 
 tk.Button(ventana,
           text="=", padx=20,
           pady=20,
           font=('Helvetica', 30),
+          bg='light green',
           command=evaluar
           ).grid(row=5,
             
                 column=0,
                 columnspan=4,
                 sticky='nsew')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Pantalla
 ventana.mainloop()
